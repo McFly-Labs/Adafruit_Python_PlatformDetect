@@ -617,6 +617,8 @@ class Board:
             # TODO: Add other specifc board contexts here
         return board
 
+    # pylint: disable=too-many-return-statements
+
     def _rp2040_u2if_id(self) -> Optional[str]:
         import hid
 
@@ -643,8 +645,19 @@ class Board:
                 # MacroPad RP2040
                 if product == 0x0107:
                     return boards.MACROPAD_U2IF
+                # Feather RP2040 ThinkInk
+                if product == 0x812C:
+                    return boards.FEATHER_EPD_U2IF
+                # Feather RP2040 RFM
+                if product == 0x812E:
+                    return boards.FEATHER_RFM_U2IF
+                # Feather RP2040 CAN
+                if product == 0x8130:
+                    return boards.FEATHER_CAN_U2IF
         # Will only reach here if a device was added in chip.py but here.
         raise RuntimeError("RP2040_U2IF device was added to chip but not board.")
+
+    # pylint: enable=too-many-return-statements
 
     def _siemens_simatic_iot2000_id(self) -> Optional[str]:
         """Try to detect if this is a IOT2050 Gateway."""
@@ -823,6 +836,9 @@ class Board:
             yield self.board.GREATFET_ONE
             yield self.board.PICO_U2IF
             yield self.board.FEATHER_U2IF
+            yield self.board.FEATHER_CAN_U2IF
+            yield self.board.FEATHER_EPD_U2IF
+            yield self.board.FEATHER_RFM_U2IF
             yield self.board.ITSYBITY_U2IF
             yield self.board.MACROPAD_U2IF
             yield self.board.QTPY_U2IF
@@ -898,6 +914,21 @@ class Board:
     def feather_u2if(self) -> bool:
         """Check whether the current board is a Feather RP2040 w/ u2if."""
         return self.id == boards.FEATHER_U2IF
+
+    @property
+    def feather_can_u2if(self) -> bool:
+        """Check whether the current board is a Feather CAN Bus RP2040 w/ u2if."""
+        return self.id == boards.FEATHER_CAN_U2IF
+
+    @property
+    def feather_epd_u2if(self) -> bool:
+        """Check whether the current board is a Feather ThinkInk RP2040 w/ u2if."""
+        return self.id == boards.FEATHER_EPD_U2IF
+
+    @property
+    def feather_rfm_u2if(self) -> bool:
+        """Check whether the current board is a Feather RFM RP2040 w/ u2if."""
+        return self.id == boards.FEATHER_RFM_U2IF
 
     @property
     def itsybitsy_u2if(self) -> bool:
